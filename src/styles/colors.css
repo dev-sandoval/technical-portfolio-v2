@@ -118,5 +118,7 @@
 @media (prefers-color-scheme: dark) {
 	:root {
 		color-scheme: dark;
+		--surface: var(--color-surface-dark);
+		--foreground: var(--color-foreground-dark);
 	}
 }
