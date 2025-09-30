@@ -48,9 +48,10 @@ src/entities/
 
 ## Rules for this layer:
 - ✅ Can import from: shared only
-- ❌ Cannot import from: app, pages, widgets, features, other entities
-- ✅ Should contain domain-specific logic
-- ❌ Should not contain UI logic or feature-specific code
+- ❌ Cannot import from: app, pages, widgets, features, other entities (except via @x notation)
+- ✅ Should contain domain-specific logic and business rules
+- ❌ Should not contain UI logic, feature-specific code, or application concerns
+- ✅ May use @x notation for necessary cross-entity references (e.g., entities/song/@x/artist)
 
 ## Entity Examples:
 
@@ -317,6 +318,28 @@ export enum SkillLevel {
 }
 ```
 
+### Cross-Entity References with @x Notation
+When entities need to reference each other (e.g., Artist has Songs), use the @x notation:
+
+```typescript
+// src/entities/artist/model/types.ts
+import type { Song } from "entities/song/@x/artist";
+
+export interface Artist {
+  id: string;
+  name: string;
+  songs: Array<Song>;
+  biography?: string;
+}
+```
+
+```typescript
+// src/entities/song/@x/artist.ts
+export type { Song } from "../model/types";
+```
+
+This pattern makes cross-references explicit and helps with refactoring.
+
 ### Public API Export
 ```typescript
 // src/entities/project/index.ts
@@ -332,34 +355,38 @@ export {
 ```
 
 ## Entity Characteristics:
-1. **Domain-focused**: Represents core business concepts
-2. **Self-contained**: Contains all entity-related logic
-3. **Reusable**: Used across features and widgets
-4. **Data-centric**: Manages entity data and operations
-5. **UI-agnostic**: Business logic independent of UI
+1. **Domain-focused**: Represents core business concepts and domain models
+2. **Self-contained**: Contains all entity-related logic, data, and operations
+3. **Reusable**: Used across features and widgets without modification
+4. **Data-centric**: Manages entity data, validation, and business rules
+5. **Layer-independent**: Can only depend on shared layer, never on higher layers
+6. **Cross-reference capable**: Can reference other entities using @x notation when necessary
 
 ## Examples of entities for this portfolio:
-- **User**: Personal information and profile data
-- **Project**: Portfolio projects and related data
-- **Experience**: Work history and professional experience
-- **Skill**: Technical skills and competencies
-- **Education**: Academic background and certifications
-- **Contact**: Contact information and social links
+- **User**: Personal information, contact details, and profile data
+- **Project**: Portfolio projects with metadata, technologies, and status
+- **Experience**: Work history, professional experience, and job details
+- **Skill**: Technical skills, competency levels, and categories
+- **Education**: Academic background, certifications, and achievements
+- **Technology**: Tech stack items with categories, levels, and descriptions
 
 ## Best Practices:
-1. Keep entities focused on single business concepts
-2. Use TypeScript interfaces for strong typing
-3. Separate UI components from business logic
-4. Provide utility functions for common operations
-5. Use enums for controlled vocabularies
-6. Include proper data validation
-7. Create reusable entity UI components
-8. Document entity APIs and relationships
+1. Keep entities focused on single business concepts (Single Responsibility)
+2. Use TypeScript interfaces and strict typing for all data models
+3. Separate UI components from business logic and domain rules
+4. Provide utility functions for common entity operations
+5. Use enums for controlled vocabularies and status values
+6. Include proper data validation and business rule enforcement
+7. Create reusable entity UI components for consistent presentation
+8. Document entity APIs, relationships, and business rules clearly
+9. Use @x notation for necessary cross-entity references
+10. Follow the Public API pattern - export only what's needed
 
 ## What should NOT be entities:
-- UI-only components (use shared/ui)
-- Feature-specific logic (use features)
-- Utility functions (use shared/lib)
-- Application configuration (use app)
+- UI-only components without business logic (use shared/ui)
+- Feature-specific interactive logic (use features)
+- General utility functions (use shared/lib)
+- Application configuration or app-wide concerns (use app)
+- Widget-level compositions (use widgets)
 
-Remember: Entities are the foundation of your business domain. They should be stable, well-designed, and provide clear APIs for other layers to use.
+Remember: Entities are the foundation of your business domain. They should be stable, well-designed, and provide clear APIs for other layers to use. They represent the core concepts that your application revolves around.
