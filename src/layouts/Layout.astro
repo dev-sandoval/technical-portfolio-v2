@@ -13,7 +13,7 @@ const { description, title, img_preview } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class="dark">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -34,12 +34,6 @@ const { description, title, img_preview } = Astro.props;
 					(!('theme' in localStorage) &&
 						window.matchMedia('(prefers-color-scheme: dark)').matches)
 			);
-			// Whenever the user explicitly chooses light mode
-			localStorage.theme = 'light';
-			// Whenever the user explicitly chooses dark mode
-			localStorage.theme = 'dark';
-			// Whenever the user explicitly chooses to respect the OS preference
-			localStorage.removeItem('theme');
 		</script>
 	</head>
 
