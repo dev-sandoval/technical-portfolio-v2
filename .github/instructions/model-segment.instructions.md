@@ -352,6 +352,190 @@ export function sanitizeProjectData(data: Partial<CreateProjectDTO>): Partial<Cr
 // src/entities/project/model/operations.ts
 import type { Project, ProjectFilters, ProjectSortOptions, ProjectsResult } from './types';
 
+// Filtering operations with clear business rules
+export function filterProjects(
+  projects: Project[],
+  filters: ProjectFilters
+): Project[] {
+  let filtered = [...projects];
+
+  // Apply technology filter
+  if (filters.technologies?.length) {
+    filtered = filtered.filter(project =>
+      project.technologies.some(tech =>
+        filters.technologies!.includes(tech.id)
+      )
+    );
+  }
+
+  // Apply category filter
+  if (filters.category) {
+    filtered = filtered.filter(project =>
+      project.category === filters.category
+    );
+  }
+
+  // Apply status filter
+  if (filters.status) {
+    filtered = filtered.filter(project =>
+      project.status === filters.status
+    );
+  }
+
+  // Apply featured filter
+  if (filters.featured !== undefined) {
+    filtered = filtered.filter(project =>
+      project.featured === filters.featured
+    );
+  }
+
+  // Apply date range filter
+  if (filters.startDate) {
+    filtered = filtered.filter(project =>
+      project.startDate >= filters.startDate!
+    );
+  }
+
+  if (filters.endDate) {
+    filtered = filtered.filter(project =>
+      project.endDate && project.endDate <= filters.endDate!
+    );
+  }
+
+  return filtered;
+}
+
+// Sorting operations with business logic
+export function sortProjects(
+  projects: Project[],
+  options: ProjectSortOptions
+): Project[] {
+  const sorted = [...projects];
+
+  return sorted.sort((a, b) => {
+    let comparison = 0;
+
+    switch (options.field) {
+      case 'title':
+        comparison = a.title.localeCompare(b.title);
+        break;
+      case 'startDate':
+        comparison = a.startDate.getTime() - b.startDate.getTime();
+        break;
+      case 'endDate':
+        const aDate = a.endDate || new Date();
+        const bDate = b.endDate || new Date();
+        comparison = aDate.getTime() - bDate.getTime();
+        break;
+      case 'status':
+        comparison = a.status.localeCompare(b.status);
+        break;
+      default:
+        return 0;
+    }
+
+    return options.direction === 'desc' ? -comparison : comparison;
+  });
+}
+
+// Aggregation operations for business intelligence
+export function getProjectStats(projects: Project[]) {
+  const stats = {
+    total: projects.length,
+    completed: projects.filter(p => p.status === ProjectStatus.COMPLETED).length,
+    inProgress: projects.filter(p => p.status === ProjectStatus.IN_PROGRESS).length,
+    planned: projects.filter(p => p.status === ProjectStatus.PLANNED).length,
+    featured: projects.filter(p => p.featured).length,
+    technologiesUsed: new Set<string>(),
+    categoriesUsed: new Set<ProjectCategory>(),
+    dateRange: {
+      earliest: null as Date | null,
+      latest: null as Date | null
+    }
+  };
+
+  projects.forEach(project => {
+    // Collect technologies
+    project.technologies.forEach(tech => stats.technologiesUsed.add(tech.name));
+    
+    // Collect categories
+    stats.categoriesUsed.add(project.category);
+
+    // Track date range
+    if (!stats.dateRange.earliest || project.startDate < stats.dateRange.earliest) {
+      stats.dateRange.earliest = project.startDate;
+    }
+
+    const endDate = project.endDate || new Date();
+    if (!stats.dateRange.latest || endDate > stats.dateRange.latest) {
+      stats.dateRange.latest = endDate;
+    }
+  });
+
+  return {
+    ...stats,
+    technologiesUsed: Array.from(stats.technologiesUsed),
+    categoriesUsed: Array.from(stats.categoriesUsed)
+  };
+}
+
+// Search operations with business-relevant scoring
+export function searchProjects(
+  projects: Project[],
+  query: string,
+  limit = 10
+): Project[] {
+  if (!query.trim()) return projects.slice(0, limit);
+
+  const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 1);
+  
+  const scored = projects.map(project => {
+    let score = 0;
+
+    searchTerms.forEach(term => {
+      // Title matches get highest score
+      if (project.title.toLowerCase().includes(term)) {
+        score += 10;
+      }
+
+      // Description matches get medium score
+      if (project.description.toLowerCase().includes(term)) {
+        score += 5;
+      }
+
+      // Technology matches get medium score
+      project.technologies.forEach(tech => {
+        if (tech.name.toLowerCase().includes(term)) {
+          score += 5;
+        }
+      });
+
+      // Tag matches get lower score
+      project.tags.forEach(tag => {
+        if (tag.toLowerCase().includes(term)) {
+          score += 2;
+        }
+      });
+
+      // Long description matches get lowest score
+      if (project.longDescription?.toLowerCase().includes(term)) {
+        score += 1;
+      }
+    });
+
+    return { project, score };
+  }).filter(item => item.score > 0);
+
+  // Sort by score descending and return projects
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(item => item.project);
+}
+```typescript
+// src/entities/project/model/operations.ts
+import type { Project, ProjectFilters, ProjectSortOptions, ProjectsResult } from './types';
+
 // Filtering operations
 export function filterProjects(
   projects: Project[],
@@ -560,30 +744,46 @@ export const FORM_MESSAGES = {
 
 ## Best Practices:
 
-### 1. Strong Typing
-- Always define proper TypeScript interfaces
-- Use enums for controlled vocabularies
-- Leverage utility types (Pick, Omit, Partial)
-- Create specific types for different use cases
+### 1. Strong Typing and Type Safety
+- Always define comprehensive TypeScript interfaces
+- Use const assertions for better type inference
+- Leverage utility types (Pick, Omit, Partial, Required)
+- Create specific types for different use cases (DTOs, domain objects, view models)
+- Use branded types for IDs and other critical values
 
-### 2. Immutability
+### 2. Immutability and Pure Functions
 - Prefer readonly properties where appropriate
-- Use immutable update patterns
-- Avoid mutating input parameters
+- Use immutable update patterns (spread operators, library helpers)
+- Avoid mutating input parameters - always return new objects
+- Design functions to be pure (same input = same output, no side effects)
+- Use functional programming patterns for data transformations
 
-### 3. Single Responsibility
-- Keep each function focused on one task
-- Separate validation, transformation, and business logic
-- Create small, composable functions
+### 3. Single Responsibility and Modularity
+- Keep each function focused on one specific task
+- Separate validation, transformation, and business logic concerns
+- Create small, composable functions that can be easily tested
+- Group related functions into focused modules
+- Avoid large, monolithic operations that do everything
 
-### 4. Error Handling
-- Define clear error types and codes
-- Provide meaningful error messages
-- Handle edge cases gracefully
+### 4. Comprehensive Error Handling
+- Define clear error types with specific error codes and messages
+- Provide meaningful, user-friendly error messages
+- Handle edge cases gracefully (empty arrays, null values, etc.)
+- Use Result types or similar patterns for operations that can fail
+- Log errors appropriately for debugging while protecting user data
 
-### 5. Performance
+### 5. Performance and Optimization
 - Avoid expensive operations in frequently called functions
-- Use memoization for computed values
-- Implement proper caching strategies
+- Use memoization for computed values that don't change often
+- Implement proper caching strategies for data that doesn't change frequently
+- Consider lazy evaluation for expensive operations
+- Profile and optimize bottlenecks based on actual usage patterns
 
-Remember: The model segment is the core of your business logic. Keep it pure, testable, and independent of UI concerns.
+### 6. Testing and Documentation
+- Write comprehensive unit tests for all business logic
+- Document complex business rules with inline comments
+- Provide clear JSDoc comments for public APIs
+- Include examples in documentation for complex functions
+- Test edge cases and error conditions thoroughly
+
+Remember: The model segment is the core of your business logic. Keep it pure, testable, and independent of UI concerns. It should be the most stable and well-tested part of your application.
