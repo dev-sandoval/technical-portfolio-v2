@@ -13,7 +13,7 @@ const { description, title, img_preview } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -27,21 +27,19 @@ const { description, title, img_preview } = Astro.props;
 		<meta property="og:type" content="website" />
 		<title>{title}</title>
 		<script is:inline>
-			const theme = (() => {
-				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-					return localStorage.getItem('theme');
-				}
-				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-					return 'dark';
-				}
-				return 'light';
-			})();
-
-			if (theme === 'light') {
-				document.documentElement.classList.remove('dark');
-			} else {
-				document.documentElement.classList.add('dark');
-			}
+			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+			document.documentElement.classList.toggle(
+				'dark',
+				localStorage.theme === 'dark' ||
+					(!('theme' in localStorage) &&
+						window.matchMedia('(prefers-color-scheme: dark)').matches)
+			);
+			// Whenever the user explicitly chooses light mode
+			localStorage.theme = 'light';
+			// Whenever the user explicitly chooses dark mode
+			localStorage.theme = 'dark';
+			// Whenever the user explicitly chooses to respect the OS preference
+			localStorage.removeItem('theme');
 		</script>
 	</head>
 
