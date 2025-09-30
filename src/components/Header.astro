@@ -1,7 +1,7 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 import LanguagePicker from './LanguagePicker.astro';
-import MenuIcon from './icons/MenuIcon.astro';
+import MenuIcon from '@assets/icons/MenuIcon.astro';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
