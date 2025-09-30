@@ -20,37 +20,37 @@ Este proyecto utiliza un sistema completo de instrucciones personalizadas para G
 
 Cada capa de FSD tiene su propio archivo `.instructions.md` con reglas específicas:
 
-#### **App Layer** - [`src/app/.instructions.md`](src/app/.instructions.md)
+#### **App Layer** - [`src/app/.instructions.md`](.github/instructions/app.instructions.md)
 - Configuración global de la aplicación
 - Providers y contexto global
 - Estilos globales y temas
 - Inicialización de la aplicación
 
-#### **Pages Layer** - [`src/pages/.instructions.md`](src/pages/.instructions.md)
+#### **Pages Layer** - [`src/pages/.instructions.md`](.github/instructions/pages.instructions.md)
 - Páginas de Astro y rutas
 - Composición de widgets en páginas completas
 - Gestión de datos específicos de página
 - SEO y meta tags
 
-#### **Widgets Layer** - [`src/widgets/.instructions.md`](src/widgets/.instructions.md)
+#### **Widgets Layer** - [`src/widgets/.instructions.md`](.github/instructions/widgets.instructions.md)
 - Bloques de UI grandes y autónomos
 - Secciones principales de página (Header, Footer, Hero)
 - Combinación de features y entities
 - Componentes reutilizables complejos
 
-#### **Features Layer** - [`src/features/.instructions.md`](src/features/.instructions.md)
+#### **Features Layer** - [`src/features/.instructions.md`](.github/instructions/features.instructions.md)
 - Funcionalidades de negocio reutilizables
 - Interacciones y acciones del usuario
 - Componentes con lógica de negocio
 - Gestión de estado específico de features
 
-#### **Entities Layer** - [`src/entities/.instructions.md`](src/entities/.instructions.md)
+#### **Entities Layer** - [`src/entities/.instructions.md`](.github/instructions/entities.instructions.md)
 - Modelos de dominio y entidades de negocio
 - Tipos de datos y interfaces principales
 - Lógica de negocio central
 - Operaciones específicas de entidades
 
-#### **Shared Layer** - [`src/shared/.instructions.md`](src/shared/.instructions.md)
+#### **Shared Layer** - [`src/shared/.instructions.md`](.github/instructions/shared.instructions.md)
 - Sistema de diseño y componentes UI básicos
 - Utilidades y funciones helper
 - Configuración y constantes
