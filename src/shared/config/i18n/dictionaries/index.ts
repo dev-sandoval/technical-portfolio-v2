@@ -1,6 +1,7 @@
 import { Language } from '../languages';
 import { navigationTranslations } from './navigation';
 import { heroTranslations } from './hero';
+import { avatarTranslations } from './avatar';
 
 /**
  * Combina todos los diccionarios de traducción en un solo objeto.
@@ -12,6 +13,7 @@ function combineTranslations(lang: Language): Record<string, string> {
 	return {
 		...navigationTranslations[lang],
 		...heroTranslations[lang],
+		...avatarTranslations[lang],
 	};
 }
 
