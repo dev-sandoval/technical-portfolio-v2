@@ -1,5 +1,5 @@
 ---
-import Badge from '@shared/ui/Badge.astro';
+import { CertificationBadge } from '@entities/badges';
 import { getLangFromUrl } from '../i18n/utils';
 
 const lang = getLangFromUrl(new URL(Astro.request.url));
@@ -64,7 +64,7 @@ const badges = BADGES[lang] || BADGES.es;
 	{
 		badges.map(badge => (
 			<li>
-				<Badge src={badge.image} alt={badge.label} href={badge.link} />
+				<CertificationBadge src={badge.image} alt={badge.label} href={badge.link} />
 			</li>
 		))
 	}
