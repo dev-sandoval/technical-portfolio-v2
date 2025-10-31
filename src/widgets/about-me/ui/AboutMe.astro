@@ -1,7 +1,9 @@
 ---
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
+import { Language } from '@shared/config/i18n';
 
-const lang = getLangFromUrl(new URL(Astro.request.url));
+const langCode = getLangFromUrl(new URL(Astro.request.url));
+const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
 const t = useTranslations(lang);
 const personalImageAlt = 'Juan David';
 ---
