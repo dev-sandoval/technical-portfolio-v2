@@ -1,19 +1,21 @@
 # CertificationBadge Component
 
 ## Description
+
 A specialized component for displaying certification and achievement badges with images. Part of the Entities layer (badges domain) in the FSD architecture. Designed specifically for showcasing professional certifications, course completions, and achievements.
 
 ## Location
+
 `src/entities/badges/ui/certification-badge.astro`
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-|------|------|---------|----------|-------------|
-| `src` | `string` | - | ✅ | Path to the certification image (local or external URL) |
-| `alt` | `string` | `''` | ❌ | Certification name/description for accessibility |
-| `href` | `string` | - | ❌ | Link to certification verification page |
-| `class` | `string` | - | ❌ | Additional CSS classes |
+| Prop    | Type     | Default | Required | Description                                             |
+| ------- | -------- | ------- | -------- | ------------------------------------------------------- |
+| `src`   | `string` | -       | ✅       | Path to the certification image (local or external URL) |
+| `alt`   | `string` | `''`    | ❌       | Certification name/description for accessibility        |
+| `href`  | `string` | -       | ❌       | Link to certification verification page                 |
+| `class` | `string` | -       | ❌       | Additional CSS classes                                  |
 
 ## Features
 
@@ -29,65 +31,67 @@ A specialized component for displaying certification and achievement badges with
 ## Usage
 
 ### Basic Example
+
 ```astro
 ---
 import { CertificationBadge } from '@/entities/badges';
 ---
 
-<CertificationBadge 
-  src="/badges/github-foundations.png"
-  alt="GitHub Foundations Certification"
-  href="https://www.credly.com/badges/..."
+<CertificationBadge
+	src="/badges/github-foundations.png"
+	alt="GitHub Foundations Certification"
+	href="https://www.credly.com/badges/..."
 />
 ```
 
 ### With Local Image
+
 ```astro
-<CertificationBadge 
-  src="/badges/aws-certified.png"
-  alt="AWS Certified Developer"
-  href="https://aws.amazon.com/verification/..."
+<CertificationBadge
+	src="/badges/aws-certified.png"
+	alt="AWS Certified Developer"
+	href="https://aws.amazon.com/verification/..."
 />
 ```
 
 ### With External Image
+
 ```astro
-<CertificationBadge 
-  src="https://cdn.credly.com/assets/badge.png"
-  alt="Professional Scrum Master I"
-  href="https://www.credly.com/badges/..."
+<CertificationBadge
+	src="https://cdn.credly.com/assets/badge.png"
+	alt="Professional Scrum Master I"
+	href="https://www.credly.com/badges/..."
 />
 ```
 
 ### In a Grid Layout
+
 ```astro
 ---
 import { CertificationBadge } from '@/entities/badges';
 
 const certifications = [
-  {
-    image: '/badges/cert1.png',
-    label: 'GitHub Foundations',
-    link: 'https://...'
-  },
-  {
-    image: '/badges/cert2.png',
-    label: 'AWS Developer',
-    link: 'https://...'
-  }
+	{
+		image: '/badges/cert1.png',
+		label: 'GitHub Foundations',
+		link: 'https://...',
+	},
+	{
+		image: '/badges/cert2.png',
+		label: 'AWS Developer',
+		link: 'https://...',
+	},
 ];
 ---
 
 <ul class="flex flex-wrap items-center justify-center gap-4">
-  {certifications.map(cert => (
-    <li>
-      <CertificationBadge 
-        src={cert.image}
-        alt={cert.label}
-        href={cert.link}
-      />
-    </li>
-  ))}
+	{
+		certifications.map(cert => (
+			<li>
+				<CertificationBadge src={cert.image} alt={cert.label} href={cert.link} />
+			</li>
+		))
+	}
 </ul>
 ```
 
@@ -97,9 +101,9 @@ The component uses these design tokens:
 
 - **Size**: `size-28` (112px) container, `size-24` (96px) image
 - **Shape**: `rounded-full` (circular)
-- **Background**: 
-  - Light: `bg-gray-200/30` → hover: `bg-gray-200/50`
-  - Dark: `bg-gray-500/20` → hover: `bg-gray-500/40`
+- **Background**:
+    - Light: `bg-gray-200/30` → hover: `bg-gray-200/50`
+    - Dark: `bg-gray-500/20` → hover: `bg-gray-500/40`
 - **Shadow**: Elevates to `shadow-lg` on hover
 - **Transform**: Image scales to 110% on hover
 - **Transition**: 300ms ease-in-out
@@ -118,27 +122,23 @@ The component uses these design tokens:
 The component automatically detects image type:
 
 ```astro
-{isLocalImage ? (
-  <Image 
-    src={src}        // Astro Image component
-    width={96}       // Optimized sizes
-    height={96}
-  />
-) : (
-  <img 
-    src={src}        // Standard img for external URLs
-    width="96"
-    height="96"
-  />
-)}
+{
+	isLocalImage ? (
+		<Image src={src} Astro Image component width={96} Optimized sizes height={96} />
+	) : (
+		<img src={src} Standard img for external URLs width="96" height="96" />
+	)
+}
 ```
 
 **Local images** (`/`, `./`, `../`):
+
 - Automatic format conversion (WebP, AVIF)
 - Responsive image generation
 - Better performance
 
 **External images** (`https://`, `http://`):
+
 - Uses standard `<img>` tag
 - No build-time optimization
 - Works with CDN URLs
@@ -169,6 +169,7 @@ This component is in the **Entities** layer (not Shared) because:
 4. **Data relationship**: Related to certification data models
 
 **Contrast with Shared/UI Badge:**
+
 - Shared Badge: Generic label/tag component (`<Badge>Label</Badge>`)
 - Entity CertificationBadge: Domain-specific certification card with image
 
@@ -183,6 +184,7 @@ This component is in the **Entities** layer (not Shared) because:
 This component replaces the incorrectly named `Badge.astro` that was in `shared/ui`:
 
 ### Before (Incorrect):
+
 ```astro
 ---
 // src/shared/ui/badge.astro (WRONG - business logic in shared)
@@ -192,6 +194,7 @@ import { Image } from 'astro:assets';
 ```
 
 ### After (Correct):
+
 ```astro
 ---
 // src/entities/badges/ui/certification-badge.astro (CORRECT)
@@ -201,13 +204,13 @@ import { Image } from 'astro:assets';
 ```
 
 ### Usage Update:
+
 ```astro
-<!-- Before -->
-import Badge from '@shared/ui/Badge.astro';
+<!-- Before -->import Badge from '@shared/ui/Badge.astro';
 <Badge src="..." alt="..." href="..." />
 
 <!-- After -->
-import { CertificationBadge } from '@entities/badges';
+import {CertificationBadge} from '@entities/badges';
 <CertificationBadge src="..." alt="..." href="..." />
 ```
 

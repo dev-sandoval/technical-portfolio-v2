@@ -1,16 +1,9 @@
----
-import { CertificationBadge } from '@entities/badges';
-import { getLangFromUrl } from '../i18n/utils';
+import type { BadgesByLanguage } from './types';
 
-const lang = getLangFromUrl(new URL(Astro.request.url));
-
-interface BadgeItem {
-	label: string;
-	link?: string;
-	image: string;
-}
-
-const BADGES: Record<string, BadgeItem[]> = {
+/**
+ * Certification badges database organized by language
+ */
+export const BADGES: BadgesByLanguage = {
 	es: [
 		{
 			label: 'GitHub Foundations | GitHub',
@@ -56,16 +49,3 @@ const BADGES: Record<string, BadgeItem[]> = {
 		},
 	],
 };
-
-const badges = BADGES[lang] || BADGES.es;
----
-
-<ul class="flex flex-wrap items-center justify-center gap-4">
-	{
-		badges.map(badge => (
-			<li>
-				<CertificationBadge src={badge.image} alt={badge.label} href={badge.link} />
-			</li>
-		))
-	}
-</ul>
