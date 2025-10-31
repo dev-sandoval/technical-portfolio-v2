@@ -32,11 +32,7 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./') || src.startsWi
 			alt={alt}
 			width={dimension}
 			height={dimension}
-			class:list={[
-				'rounded-full object-cover aspect-square',
-				sizeClass,
-				className,
-			]}
+			class:list={['rounded-full object-cover aspect-square', sizeClass, className]}
 		/>
 	) : (
 		<img
@@ -44,11 +40,7 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./') || src.startsWi
 			alt={alt}
 			width={dimension}
 			height={dimension}
-			class:list={[
-				'rounded-full object-cover aspect-square',
-				sizeClass,
-				className,
-			]}
+			class:list={['rounded-full object-cover aspect-square', sizeClass, className]}
 		/>
 	)
 }
