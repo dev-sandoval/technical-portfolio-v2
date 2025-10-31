@@ -107,8 +107,8 @@ const t = useTranslations(lang);
 ```astro
 ---
 interface Props {
-  title: string;
-  description?: string;
+	title: string;
+	description?: string;
 }
 const { title, description } = Astro.props;
 ---
@@ -158,8 +158,8 @@ const { title, description } = Astro.props;
 ```astro
 ---
 interface Props {
-  title: string;
-  img_preview: string;
+	title: string;
+	img_preview: string;
 }
 const { title, img_preview } = Astro.props;
 ---
@@ -169,12 +169,13 @@ const { title, img_preview } = Astro.props;
 
 ```astro
 <script is:inline>
-  // Client-side theme detection and application
-  document.documentElement.classList.toggle(
-    'dark',
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  );
+	// Client-side theme detection and application
+	document.documentElement.classList.toggle(
+		'dark',
+		localStorage.theme === 'dark' ||
+			(!('theme' in localStorage) &&
+				window.matchMedia('(prefers-color-scheme: dark)').matches)
+	);
 </script>
 ```
 
