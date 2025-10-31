@@ -2,6 +2,12 @@ import { Language } from '../languages';
 import { navigationTranslations } from './navigation';
 import { heroTranslations } from './hero';
 import { avatarTranslations } from './avatar';
+import { experienceTranslations } from './experience';
+import { aboutMeTranslations } from './about-me';
+import { projectsTranslations } from './projects';
+import { badgesTranslations } from './badges';
+import { footerTranslations } from './footer';
+import { themeTranslations } from './theme';
 
 /**
  * Combina todos los diccionarios de traducción en un solo objeto.
@@ -14,6 +20,12 @@ function combineTranslations(lang: Language): Record<string, string> {
 		...navigationTranslations[lang],
 		...heroTranslations[lang],
 		...avatarTranslations[lang],
+		...experienceTranslations[lang],
+		...aboutMeTranslations[lang],
+		...projectsTranslations[lang],
+		...badgesTranslations[lang],
+		...footerTranslations[lang],
+		...themeTranslations[lang],
 	};
 }
 
