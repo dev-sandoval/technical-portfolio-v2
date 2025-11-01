@@ -2,37 +2,31 @@
 import { ThemeToggle } from '@features/theme-toggle';
 import { LanguagePicker } from '@features/language-picker';
 import MenuIcon from '@assets/icons/MenuIcon.astro';
-import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
-import { Language, DEFAULT_LANGUAGE } from '@shared/config/i18n';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '@shared/lib/i18n';
 
-const langCode = getLangFromUrl(new URL(Astro.request.url));
-const lang = langCode === 'en' ? Language.ENGLISH : Language.SPANISH;
+const lang = getLangFromUrl(new URL(Astro.request.url));
 const t = useTranslations(lang);
-
-// For default language (Spanish), use root path without prefix
-// For other languages (English), use /lang/ prefix
-const basePath = langCode === DEFAULT_LANGUAGE ? '' : `/${langCode}`;
 
 const navItems = [
 	{
 		title: t('nav.experience'),
 		label: 'experiencia',
-		url: `${basePath}/#experience`,
+		url: getLocalizedPath(lang, '/#experience'),
 	},
 	{
 		title: t('nav.badges'),
 		label: 'insignias',
-		url: `${basePath}/#badges`,
+		url: getLocalizedPath(lang, '/#badges'),
 	},
 	{
 		title: t('nav.projects'),
 		label: 'proyectos',
-		url: `${basePath}/#projects`,
+		url: getLocalizedPath(lang, '/#projects'),
 	},
 	{
 		title: t('nav.about'),
 		label: 'sobre-mi',
-		url: `${basePath}/#about-me`,
+		url: getLocalizedPath(lang, '/#about-me'),
 	},
 	{
 		title: t('nav.contact'),
