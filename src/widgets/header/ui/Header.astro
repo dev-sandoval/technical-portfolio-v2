@@ -187,4 +187,40 @@ const navItems = [
 		animation-timeline: scroll();
 		animation-range: 0 100px;
 	}
+
+	@keyframes nav-shadown {
+		0% {
+			background: transparent;
+			backdrop-filter: none;
+			box-shadow: none;
+		}
+		to {
+			background: rgba(255, 255, 255, 0.7);
+			backdrop-filter: blur(12px);
+			box-shadow:
+				0 4px 6px -1px rgb(0 0 0 / 0.1),
+				0 2px 4px -2px rgb(0 0 0 / 0.1);
+		}
+	}
+
+	:global(.dark) nav {
+		animation: nav-shadown-dark 1s linear both;
+		animation-timeline: scroll();
+		animation-range: 0 100px;
+	}
+
+	@keyframes nav-shadown-dark {
+		0% {
+			background: transparent;
+			backdrop-filter: none;
+			box-shadow: none;
+		}
+		to {
+			background: rgba(17, 24, 39, 0.8);
+			backdrop-filter: blur(12px);
+			box-shadow:
+				0 4px 6px -1px rgb(0 0 0 / 0.3),
+				0 2px 4px -2px rgb(0 0 0 / 0.3);
+		}
+	}
 </style>
