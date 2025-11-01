@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 interface Props {
 	src: string;
 	alt: string;
-	size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+	size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'responsive';
 	class?: string;
 }
 
@@ -17,6 +17,7 @@ const sizeMap = {
 	md: { dimension: 96, class: 'size-24' },
 	lg: { dimension: 192, class: 'size-48' },
 	xl: { dimension: 256, class: 'size-64' },
+	responsive: { dimension: 192, class: 'size-32 sm:size-40 md:size-46' },
 } as const;
 
 const { dimension, class: sizeClass } = sizeMap[size];
