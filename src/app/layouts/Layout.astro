@@ -47,12 +47,34 @@ const { description, title, img_preview } = Astro.props;
 	</body>
 
 	<style>
+		/*Background Layout*/
+
 		.background-pattern {
 			background-image: url('/background/polygon-luminary.svg');
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
+			opacity: 1;
+			filter: blur(0.5px);
+			backdrop-filter: blur(8px);
+		}
+
+		.background-pattern::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: rgba(255, 255, 255, 0.7);
+			z-index: 1;
+		}
+
+		.dark .background-pattern {
 			opacity: 0.4;
+			filter: none;
+			backdrop-filter: none;
+		}
+
+		.dark .background-pattern::before {
+			display: none;
 		}
 	</style>
 </html>
