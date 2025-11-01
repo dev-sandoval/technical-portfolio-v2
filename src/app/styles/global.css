@@ -2,3 +2,41 @@
 @import './colors.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+html {
+	@apply scroll-smooth scroll-pt-10;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-brand) var(--color-muted);
+}
+
+/* Scroll bar */
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--color-muted);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--color-brand);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-brand-dark);
+}
+
+.dark ::-webkit-scrollbar-track {
+	background: var(--color-muted-dark);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+	background: var(--color-brand-light);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+	background: var(--color-brand);
+}
