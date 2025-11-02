@@ -15,63 +15,63 @@ This project **STRICTLY FOLLOWS** **Feature-Sliced Design (FSD)** architectural 
 The project is organized according to FSD layers (from top to bottom):
 
 1. **App** (`src/app`) - ✅ IMPLEMENTED
-   - `app/layouts/` - Layout.astro (main layout wrapper)
-   - `app/styles/` - global.css, colors.css (OKLCH color system)
+    - `app/layouts/` - Layout.astro (main layout wrapper)
+    - `app/styles/` - global.css, colors.css (OKLCH color system)
 
 2. **Pages** (`src/pages`) - ✅ IMPLEMENTED
-   - Astro pages and route handlers
-   - `/index.astro` (Spanish homepage), `/en/index.astro` (English homepage)
-   - `/404.astro` (Error page with i18n support)
-   - Only composition, NO business logic or data
+    - Astro pages and route handlers
+    - `/index.astro` (Spanish homepage), `/en/index.astro` (English homepage)
+    - `/404.astro` (Error page with i18n support)
+    - Only composition, NO business logic or data
 
 3. **Widgets** (`src/widgets`) - ✅ IMPLEMENTED
-   - `widgets/header/` - Site header with navigation
-   - `widgets/hero/` - Hero section
-   - `widgets/about-me/` - About me section
-   - `widgets/experience/` - Experience timeline
-   - `widgets/projects/` - Projects showcase
-   - `widgets/badges/` - Certifications/badges section
-   - `widgets/footer/` - Site footer
-   - All widgets have `index.ts` public API
+    - `widgets/header/` - Site header with navigation
+    - `widgets/hero/` - Hero section
+    - `widgets/about-me/` - About me section
+    - `widgets/experience/` - Experience timeline
+    - `widgets/projects/` - Projects showcase
+    - `widgets/badges/` - Certifications/badges section
+    - `widgets/footer/` - Site footer
+    - All widgets have `index.ts` public API
 
 4. **Features** (`src/features`) - ✅ IMPLEMENTED
-   - `features/theme-toggle/` - Dark/light mode switcher
-   - `features/language-picker/` - Language selection
-   - All features have `model/` and `ui/` folders with `index.ts`
+    - `features/theme-toggle/` - Dark/light mode switcher
+    - `features/language-picker/` - Language selection
+    - All features have `model/` and `ui/` folders with `index.ts`
 
 5. **Entities** (`src/entities`) - ✅ IMPLEMENTED
-   - `entities/badge/` - Badge entity with data and UI
-   - `entities/experience/` - Experience entity
-   - `entities/project/` - Project entity
-   - `entities/technology/` - Technology entity
-   - All entities have `model/` (types, data) and optional `ui/` folders
+    - `entities/badge/` - Badge entity with data and UI
+    - `entities/experience/` - Experience entity
+    - `entities/project/` - Project entity
+    - `entities/technology/` - Technology entity
+    - All entities have `model/` (types, data) and optional `ui/` folders
 
 6. **Shared** (`src/shared`) - ✅ IMPLEMENTED
-   - `shared/ui/` - Design system components (Avatar, Badge, Button, LinkButton, etc.)
-   - `shared/lib/i18n/` - i18n utilities (useTranslations, getLangFromUrl, etc.)
-   - `shared/config/i18n/` - i18n configuration and dictionaries
-   - `shared/assets/` - Icons and static assets (LEGACY: currently at `src/assets`)
+    - `shared/ui/` - Design system components (Avatar, Badge, Button, LinkButton, etc.)
+    - `shared/lib/i18n/` - i18n utilities (useTranslations, getLangFromUrl, etc.)
+    - `shared/config/i18n/` - i18n configuration and dictionaries
+    - `shared/assets/` - Icons and static assets (LEGACY: currently at `src/assets`)
 
 ### FSD Rules (STRICTLY ENFORCED)
 
 - **Import Rule**: Layers can ONLY import from layers BELOW them
-  - ❌ NEVER: `shared/` importing from `entities/`, `features/`, `widgets/`, `pages/`, or `app/`
-  - ❌ NEVER: `entities/` importing from `features/`, `widgets/`, `pages/`, or `app/`
-  - ✅ ALWAYS: Import downwards (Pages → Widgets → Features → Entities → Shared)
+    - ❌ NEVER: `shared/` importing from `entities/`, `features/`, `widgets/`, `pages/`, or `app/`
+    - ❌ NEVER: `entities/` importing from `features/`, `widgets/`, `pages/`, or `app/`
+    - ✅ ALWAYS: Import downwards (Pages → Widgets → Features → Entities → Shared)
 
 - **Layer Independence**: Slices within the same layer CANNOT depend on each other
-  - ❌ NEVER: `widgets/header/` importing from `widgets/footer/`
-  - ✅ ALWAYS: Extract shared logic to lower layers (Shared, Entities, or Features)
+    - ❌ NEVER: `widgets/header/` importing from `widgets/footer/`
+    - ✅ ALWAYS: Extract shared logic to lower layers (Shared, Entities, or Features)
 
 - **Public API**: ALL imports MUST go through index files
-  - ❌ NEVER: `import Component from '@/widgets/hero/ui/Hero.astro'`
-  - ✅ ALWAYS: `import { Hero } from '@/widgets/hero'`
-  - Every slice MUST have `index.ts` exporting public API
+    - ❌ NEVER: `import Component from '@/widgets/hero/ui/Hero.astro'`
+    - ✅ ALWAYS: `import { Hero } from '@/widgets/hero'`
+    - Every slice MUST have `index.ts` exporting public API
 
 - **Data and Logic Separation**:
-  - ✅ Data and types go in `model/` folder
-  - ✅ UI components go in `ui/` folder
-  - ✅ Each slice exports through `index.ts`
+    - ✅ Data and types go in `model/` folder
+    - ✅ UI components go in `ui/` folder
+    - ✅ Each slice exports through `index.ts`
 
 ## Technology Stack
 
@@ -218,18 +218,21 @@ src/
 ## Code Standards and Conventions
 
 ### TypeScript
+
 - Use strict TypeScript configuration
 - Always type function parameters and return types
 - Use interface over type for object shapes
 - Prefer `const` over `let` where possible
 
 ### Astro Components
+
 - Use `.astro` extension for Astro components
 - Place component logic in the frontmatter section
 - Use TypeScript in component scripts
 - Follow Astro's component structure: frontmatter, template, style
 
 ### Styling
+
 - Use Tailwind CSS utility classes
 - Follow mobile-first approach
 - Implement both light and dark mode support
@@ -237,12 +240,14 @@ src/
 - Keep styles scoped to components when possible
 
 ### File Naming Conventions
+
 - Use PascalCase for component files (e.g., `Hero.astro`, `ThemeToggle.astro`)
 - Use kebab-case for page files (e.g., `about-me.astro`)
 - Use camelCase for utility functions and variables
 - Use UPPER_SNAKE_CASE for constants
 
 ### Code Organization
+
 - Group related functionality into FSD slices
 - Keep components small and focused
 - Extract reusable logic into shared utilities
@@ -265,22 +270,25 @@ src/
 The project uses a **centralized dictionary-based i18n system** following FSD architecture:
 
 **Configuration**: `shared/config/i18n/`
+
 - `languages.ts` - Language enum and metadata
-  ```typescript
-  export enum Language {
-    ENGLISH = 'en',
-    SPANISH = 'es',
-  }
-  export const DEFAULT_LANGUAGE = Language.SPANISH;
-  ```
+
+    ```typescript
+    export enum Language {
+    	ENGLISH = 'en',
+    	SPANISH = 'es',
+    }
+    export const DEFAULT_LANGUAGE = Language.SPANISH;
+    ```
 
 - `dictionaries/` - Translation dictionaries organized by domain
-  - Each file exports translations for both languages
-  - Pattern: `{ [Language.ENGLISH]: {...}, [Language.SPANISH]: {...} }`
-  - Files: `navigation.ts`, `hero.ts`, `about-me.ts`, `experience.ts`, `projects.ts`, `badges.ts`, `footer.ts`, `theme.ts`, `avatar.ts`, `not-found.ts`
-  - `index.ts` - Combines all dictionaries into a single translations object
+    - Each file exports translations for both languages
+    - Pattern: `{ [Language.ENGLISH]: {...}, [Language.SPANISH]: {...} }`
+    - Files: `navigation.ts`, `hero.ts`, `about-me.ts`, `experience.ts`, `projects.ts`, `badges.ts`, `footer.ts`, `theme.ts`, `avatar.ts`, `not-found.ts`
+    - `index.ts` - Combines all dictionaries into a single translations object
 
 **Utilities**: `shared/lib/i18n/`
+
 - `useTranslations(lang)` - Returns translation function `t(key)`
 - `getLangFromUrl(url)` - Detects language from URL
 - `getLocalizedPath(path, lang)` - Generates localized URLs
@@ -289,6 +297,7 @@ The project uses a **centralized dictionary-based i18n system** following FSD ar
 ### How to Use i18n
 
 **In Astro Components:**
+
 ```astro
 ---
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
@@ -306,39 +315,43 @@ const t = useTranslations(lang);
 **ALWAYS follow this pattern:**
 
 1. **Create dictionary file** in `shared/config/i18n/dictionaries/my-feature.ts`:
+
 ```typescript
 import { Language } from '../languages';
 
 export const myFeatureTranslations = {
-  [Language.ENGLISH]: {
-    'my-feature.title': 'My Title',
-    'my-feature.description': 'My description',
-  },
-  [Language.SPANISH]: {
-    'my-feature.title': 'Mi Título',
-    'my-feature.description': 'Mi descripción',
-  },
+	[Language.ENGLISH]: {
+		'my-feature.title': 'My Title',
+		'my-feature.description': 'My description',
+	},
+	[Language.SPANISH]: {
+		'my-feature.title': 'Mi Título',
+		'my-feature.description': 'Mi descripción',
+	},
 } as const;
 ```
 
 2. **Import and combine** in `shared/config/i18n/dictionaries/index.ts`:
+
 ```typescript
 import { myFeatureTranslations } from './my-feature';
 
 function combineTranslations(lang: Language): Record<string, string> {
-  return {
-    ...existingTranslations[lang],
-    ...myFeatureTranslations[lang], // Add here
-  };
+	return {
+		...existingTranslations[lang],
+		...myFeatureTranslations[lang], // Add here
+	};
 }
 ```
 
 3. **Use in components** with the translation key:
+
 ```astro
 {t('my-feature.title')}
 ```
 
 ### ❌ NEVER Do This:
+
 - Don't create inline translation objects in pages or components
 - Don't duplicate translation logic
 - Don't create separate i18n utilities - use existing ones
@@ -363,7 +376,9 @@ function combineTranslations(lang: Language): Record<string, string> {
 ## Current Architecture Patterns
 
 ### Path Aliases (ALWAYS USE THESE)
+
 Use configured path aliases for clean imports:
+
 ```typescript
 // ✅ CORRECT - Use FSD path aliases
 import { Button, LinkButton, Badge } from '@shared/ui';
@@ -379,25 +394,31 @@ import { useTranslations } from '../../../shared/lib/i18n/translations';
 ```
 
 ### Theme System (IMPLEMENTED)
+
 Theme switching uses CSS custom properties with localStorage persistence:
+
 ```astro
 <script is:inline>
-  document.documentElement.classList.toggle(
-    'dark',
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  );
+	document.documentElement.classList.toggle(
+		'dark',
+		localStorage.theme === 'dark' ||
+			(!('theme' in localStorage) &&
+				window.matchMedia('(prefers-color-scheme: dark)').matches)
+	);
 </script>
 ```
 
 **Color tokens** are defined in `app/styles/colors.css` using OKLCH color space:
+
 ```css
 --color-brand: oklch(62.005% 0.18129 259.39);
 --color-surface: light-dark(oklch(100% 0 0), oklch(20% 0 0));
 ```
 
 ### Internationalization Pattern (IMPLEMENTED)
+
 Always use the centralized i18n system:
+
 ```astro
 ---
 import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
@@ -411,13 +432,15 @@ const t = useTranslations(lang);
 ```
 
 ### Component Props Pattern
+
 Strongly typed component interfaces:
+
 ```astro
 ---
 interface Props {
-  title: string;
-  description: string;
-  variant?: 'primary' | 'secondary';
+	title: string;
+	description: string;
+	variant?: 'primary' | 'secondary';
 }
 const { title, description, variant = 'primary' } = Astro.props;
 ---
@@ -426,6 +449,7 @@ const { title, description, variant = 'primary' } = Astro.props;
 ### Shared UI Components (DESIGN SYSTEM)
 
 **Available components in `shared/ui/`:**
+
 - `Avatar` - User avatar with sizes (xs, sm, md, lg, xl, responsive)
 - `Badge` - Label badges with variants (default, info, success, warning, danger)
 - `Button` - Action button (primary, secondary variants)
@@ -436,6 +460,7 @@ const { title, description, variant = 'primary' } = Astro.props;
 - `TitleSection` - Section title component
 
 **Import pattern:**
+
 ```astro
 ---
 import { Button, LinkButton, Badge, Avatar } from '@shared/ui';
@@ -448,6 +473,7 @@ import { Button, LinkButton, Badge, Avatar } from '@shared/ui';
 ```
 
 **Shared styles:**
+
 - Button styles use `shared/ui/button/button.css` with Tailwind @apply
 - Both `Button` and `LinkButton` share the same visual styles
 - Classes: `.btn-base`, `.btn-primary`, `.btn-secondary`
@@ -457,6 +483,7 @@ import { Button, LinkButton, Badge, Avatar } from '@shared/ui';
 **Current State**: The project has successfully migrated to FSD architecture. All layers are implemented and functioning.
 
 **✅ COMPLETED Migration Tasks**:
+
 1. ✅ Established App layer with layouts and global styles
 2. ✅ Organized Pages layer for routing (index.astro, 404.astro, /en/ routes)
 3. ✅ Created Widgets layer (header, hero, about-me, experience, projects, badges, footer)
@@ -469,11 +496,13 @@ import { Button, LinkButton, Badge, Avatar } from '@shared/ui';
 10. ✅ Enforced FSD import rules and layer independence
 
 **⚠️ LEGACY Items (Do NOT use)**:
+
 - `src/i18n/` - Old i18n folder (REPLACED by `shared/config/i18n/` and `shared/lib/i18n/`)
 - Inline translations in components (MUST use `shared/config/i18n/dictionaries/`)
 - Direct component imports without public API (MUST use index.ts exports)
 
 **Key FSD Principles in This Project**:
+
 - **Layer Import Rule**: Pages → Widgets → Features → Entities → Shared (downward only)
 - **Slice Independence**: Widgets don't import from other widgets (use Shared layer for common code)
 - **Public API Pattern**: All imports through index.ts (e.g., `from '@shared/ui'` not `from '@shared/ui/button/Button.astro'`)
