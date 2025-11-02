@@ -7,6 +7,7 @@ El Shared layer contiene componentes UI genéricos, reutilizables y **sin lógic
 ## 🎯 Componentes a Migrar
 
 ### Inventario Actual
+
 ```
 src/components/
 ├── Badge.astro             → src/shared/ui/badge/
@@ -48,12 +49,14 @@ const { src, alt = '', href } = Astro.props;
 ```
 
 **Análisis:**
+
 - ✅ Sin lógica de negocio
 - ✅ Props simples (src, alt, href)
 - ✅ Reutilizable
 - ❌ Usa `<img>` en vez de `<Image>` de Astro
 
 **Nueva ubicación FSD:**
+
 ```bash
 src/shared/ui/badge/
 ├── Badge.astro        # Componente
@@ -63,6 +66,7 @@ src/shared/ui/badge/
 **Pasos:**
 
 1. **Crear estructura:**
+
 ```bash
 mkdir -p src/shared/ui/badge
 ```
@@ -70,6 +74,7 @@ mkdir -p src/shared/ui/badge
 2. **Migrar componente con mejoras Astro:**
 
 `src/shared/ui/badge/Badge.astro`:
+
 ```astro
 ---
 import { Image } from 'astro:assets';
@@ -89,7 +94,7 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./');
 ---
 
 <a
-	href={href}
+	{href}
 	target="_blank"
 	rel="noopener noreferrer"
 	class:list={[
@@ -97,24 +102,26 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./');
 		'bg-gray-200/30 dark:bg-gray-500/20',
 		'transition-all duration-300 ease-in-out',
 		'group hover:bg-gray-200/50 dark:hover:bg-gray-500/40 hover:shadow-lg',
-		className
+		className,
 	]}
 >
-	{isLocalImage ? (
-		<Image
-			src={src}
-			alt={alt}
-			width={96}
-			height={96}
-			class="size-24 aspect-square transition-transform duration-300 ease-in-out group-hover:scale-110"
-		/>
-	) : (
-		<img
-			src={src}
-			alt={alt}
-			class="size-24 aspect-square transition-transform duration-300 ease-in-out group-hover:scale-110"
-		/>
-	)}
+	{
+		isLocalImage ? (
+			<Image
+				src={src}
+				alt={alt}
+				width={96}
+				height={96}
+				class="size-24 aspect-square transition-transform duration-300 ease-in-out group-hover:scale-110"
+			/>
+		) : (
+			<img
+				src={src}
+				alt={alt}
+				class="size-24 aspect-square transition-transform duration-300 ease-in-out group-hover:scale-110"
+			/>
+		)
+	}
 	<span
 		class="absolute bottom-0 mb-20 hidden px-2 py-1 text-sm text-white bg-gray-800 rounded-md opacity-0 group-hover:block group-hover:opacity-100 transition-opacity duration-300 text-center w-52"
 	>
@@ -124,6 +131,7 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./');
 ```
 
 **Mejoras aplicadas:**
+
 - ✅ Interface TypeScript para props
 - ✅ Uso de `class:list` de Astro
 - ✅ Soporte para `<Image>` en imágenes locales
@@ -132,11 +140,13 @@ const isLocalImage = src.startsWith('/') || src.startsWith('./');
 3. **Crear Public API:**
 
 `src/shared/ui/badge/index.ts`:
+
 ```typescript
 export { default as Badge } from './Badge.astro';
 ```
 
 4. **Actualizar `src/shared/ui/index.ts`:**
+
 ```typescript
 export { Avatar } from './Avatar.astro'; // Ya existe
 export { Badge } from './badge';
@@ -153,17 +163,19 @@ export { Badge } from './badge';
 const { class: className, id } = Astro.props;
 ---
 
-<section id={id} class:list={['w-full mx-auto container lg:max-w-4xl md:max-w-2xl', className]}>
+<section {id} class:list={['w-full mx-auto container lg:max-w-4xl md:max-w-2xl', className]}>
 	<slot />
 </section>
 ```
 
 **Análisis:**
+
 - ✅ Componente de layout simple
 - ✅ Usa slots (patrón Astro correcto)
 - ✅ Ya usa `class:list`
 
 **Nueva ubicación:**
+
 ```bash
 src/shared/ui/section-container/
 ├── SectionContainer.astro
@@ -173,6 +185,7 @@ src/shared/ui/section-container/
 **Pasos:**
 
 1. **Crear estructura:**
+
 ```bash
 mkdir -p src/shared/ui/section-container
 ```
@@ -180,6 +193,7 @@ mkdir -p src/shared/ui/section-container
 2. **Migrar con tipos:**
 
 `src/shared/ui/section-container/SectionContainer.astro`:
+
 ```astro
 ---
 interface Props {
@@ -190,14 +204,7 @@ interface Props {
 const { class: className, id } = Astro.props;
 ---
 
-<section
-	id={id}
-	class:list={[
-		'w-full mx-auto container',
-		'lg:max-w-4xl md:max-w-2xl',
-		className
-	]}
->
+<section {id} class:list={['w-full mx-auto container', 'lg:max-w-4xl md:max-w-2xl', className]}>
 	<slot />
 </section>
 ```
@@ -205,6 +212,7 @@ const { class: className, id } = Astro.props;
 3. **Public API:**
 
 `src/shared/ui/section-container/index.ts`:
+
 ```typescript
 export { default as SectionContainer } from './SectionContainer.astro';
 ```
@@ -216,23 +224,25 @@ export { default as SectionContainer } from './SectionContainer.astro';
 **Componente actual:** `src/components/LinkButton.astro`
 
 **Análisis del código actual:**
+
 ```astro
 ---
 const { href } = Astro.props;
 ---
 
 <a
-	href={href}
+	{href}
 	target="_blank"
 	rel="noopener noreferrer"
 	role="link"
-	class="inline-flex items-center justify-center gap-2 px-4 py-1 text-gray-800 transition bg-gray-100 border border-gray-300 rounded-full dark:bg-gray-800 dark:border-gray-600 dark:text-white focus-visible:ring-yellow-500/80 text-md hover:bg-gray-900 hover:border-gray-700 group max-w-fit hover:text-white focus:outline-none focus-visible:outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 active:bg-black"
+	class="inline-flex items-center justify-center gap-2 px-4 py-1 text-gray-800 transition bg-gray-100 border border-gray-300 rounded-full dark:bg-gray-800 dark:border-gray-600 dark:text-white focus-visible:ring-yellow-500/80 text-base hover:bg-gray-900 hover:border-gray-700 group max-w-fit hover:text-white focus:outline-none focus-visible:outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-2 active:bg-black"
 >
 	<slot />
 </a>
 ```
 
 **Nueva ubicación:**
+
 ```bash
 src/shared/ui/link-button/
 ├── LinkButton.astro
@@ -242,6 +252,7 @@ src/shared/ui/link-button/
 **Migración:**
 
 `src/shared/ui/link-button/LinkButton.astro`:
+
 ```astro
 ---
 interface Props {
@@ -254,13 +265,13 @@ const { href, target = '_blank', class: className } = Astro.props;
 ---
 
 <a
-	href={href}
-	target={target}
+	{href}
+	{target}
 	rel={target === '_blank' ? 'noopener noreferrer' : undefined}
 	role="link"
 	class:list={[
 		'inline-flex items-center justify-center gap-2',
-		'px-4 py-1 text-md max-w-fit',
+		'px-4 py-1 text-base max-w-fit',
 		'text-gray-800 dark:text-white',
 		'bg-gray-100 dark:bg-gray-800',
 		'border border-gray-300 dark:border-gray-600',
@@ -270,7 +281,7 @@ const { href, target = '_blank', class: className } = Astro.props;
 		'focus-visible:ring focus-visible:ring-white focus-visible:ring-yellow-500/80 focus-visible:ring-offset-2',
 		'active:bg-black',
 		'group',
-		className
+		className,
 	]}
 >
 	<slot />
@@ -278,6 +289,7 @@ const { href, target = '_blank', class: className } = Astro.props;
 ```
 
 `src/shared/ui/link-button/index.ts`:
+
 ```typescript
 export { default as LinkButton } from './LinkButton.astro';
 ```
@@ -308,6 +320,7 @@ cp src/components/TitleSection.astro src/shared/ui/title-section/TitleSection.as
 ## 🎨 Actualizar Public API Central
 
 `src/shared/ui/index.ts`:
+
 ```typescript
 // Componentes UI del Shared Layer
 export { Avatar } from './avatar';
@@ -322,6 +335,7 @@ export { TitleSection } from './title-section';
 ## 🧪 Testing de Migración
 
 ### 1. Verificar estructura:
+
 ```bash
 ls -R src/shared/ui/
 
@@ -331,7 +345,9 @@ ls -R src/shared/ui/
 ```
 
 ### 2. Test de import:
+
 Crear archivo temporal `src/test-imports.ts`:
+
 ```typescript
 import {
 	Avatar,
@@ -340,13 +356,14 @@ import {
 	LinkButton,
 	LinkInline,
 	SocialPill,
-	TitleSection
+	TitleSection,
 } from '@shared/ui';
 
 // Si no hay errores TypeScript, la migración es exitosa
 ```
 
 ### 3. Build:
+
 ```bash
 bun run build
 ```
@@ -354,30 +371,37 @@ bun run build
 ## 📊 Tips Astro Aplicados
 
 ### 1. **Astro.props con TypeScript**
+
 ```astro
 ---
 interface Props {
 	title: string;
-	description?: string;  // Opcional
+	description?: string; // Opcional
 }
 const { title, description = 'Default' } = Astro.props;
 ---
 ```
 
 ### 2. **class:list para clases dinámicas**
+
 ```astro
-<div class:list={[
-	'base-class',
-	condition && 'conditional-class',
-	className  // De props
-]}>
+<div
+	class:list={[
+		'base-class',
+		condition && 'conditional-class',
+		className, // De props
+	]}
+>
+</div>
 ```
 
 ### 3. **Slots para composición**
+
 ```astro
 <!-- Componente -->
 <div>
-	<slot /> <!-- Contenido hijo -->
+	<slot />
+	<!-- Contenido hijo -->
 </div>
 
 <!-- Uso -->
@@ -387,6 +411,7 @@ const { title, description = 'Default' } = Astro.props;
 ```
 
 ### 4. **Image vs img**
+
 ```astro
 ---
 import { Image } from 'astro:assets';
