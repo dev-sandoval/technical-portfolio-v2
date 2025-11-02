@@ -6,14 +6,14 @@ import type { ProjectItem } from './types';
  */
 export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 	return [
-		{
-			title: t('projects.techshop.title'),
-			description: t('projects.techshop.description'),
-			link: 'https://byte-shop-ecommerce.vercel.app',
-			github: 'https://github.com/sandovaldavid/byte-shop-ecommerce',
-			image: '/projects/project-15-TechShop.webp',
-			tags: [TAGS.NEXTJS, TAGS.REACT, TAGS.SANITY, TAGS.TAILWIND],
-		},
+		// {
+		// 	title: t('projects.techshop.title'),
+		// 	description: t('projects.techshop.description'),
+		// 	link: 'https://byte-shop-ecommerce.vercel.app',
+		// 	github: 'https://github.com/sandovaldavid/byte-shop-ecommerce',
+		// 	image: '/projects/project-15-TechShop.webp',
+		// 	tags: [TAGS.NEXTJS, TAGS.REACT, TAGS.SANITY, TAGS.TAILWIND],
+		// },
 		{
 			title: t('projects.buona-vita.title'),
 			description: t('projects.buona-vita.description'),
@@ -38,14 +38,14 @@ export function getProjectsData(t: (key: string) => string): ProjectItem[] {
 			image: '/projects/project-18-doguito.webp',
 			tags: [TAGS.HTML, TAGS.CSS, TAGS.JAVASCRIPT],
 		},
-		{
-			title: t('projects.mail.title'),
-			description: t('projects.mail.description'),
-			link: 'https://mail.devsandoval.me',
-			github: 'https://github.com/sandovaldavid/project-03-mail',
-			image: '/projects/project-14-mail.webp',
-			tags: [TAGS.DJANGO, TAGS.BOOTSTRAP, TAGS.JAVASCRIPT],
-		},
+		// {
+		// 	title: t('projects.mail.title'),
+		// 	description: t('projects.mail.description'),
+		// 	link: 'https://mail.devsandoval.me',
+		// 	github: 'https://github.com/sandovaldavid/project-03-mail',
+		// 	image: '/projects/project-14-mail.webp',
+		// 	tags: [TAGS.DJANGO, TAGS.BOOTSTRAP, TAGS.JAVASCRIPT],
+		// },
 		{
 			title: t('projects.wiki.title'),
 			description: t('projects.wiki.description'),
