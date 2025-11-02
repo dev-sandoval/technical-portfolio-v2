@@ -8,6 +8,7 @@ import { projectsTranslations } from './projects';
 import { badgesTranslations } from './badges';
 import { footerTranslations } from './footer';
 import { themeTranslations } from './theme';
+import { notFoundTranslations } from './not-found';
 
 /**
  * Combina todos los diccionarios de traducción en un solo objeto.
@@ -26,6 +27,7 @@ function combineTranslations(lang: Language): Record<string, string> {
 		...badgesTranslations[lang],
 		...footerTranslations[lang],
 		...themeTranslations[lang],
+		...notFoundTranslations[lang],
 	};
 }
 

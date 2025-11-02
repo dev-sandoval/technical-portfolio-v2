@@ -6,21 +6,21 @@ import QuoteRight from '@/assets/icons/QuoteRight.astro';
 import '@app/styles/global.css';
 import '@fontsource-variable/onest';
 import { SectionContainer, LinkButton, Button } from '@shared/ui';
+import { getLangFromUrl, useTranslations } from '@shared/lib/i18n';
 
-const metadata = {
-	title: '404 - Página no encontrada | David Sandoval',
-	description: 'La página que buscas no existe o ha sido movida.',
-};
+// Detect language from URL
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
-<html lang="es">
+<html {lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="description" content={metadata.description} />
+		<meta name="description" content={t('not-found.description')} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{metadata.title}</title>
+		<title>{t('not-found.title')}</title>
 		<script is:inline>
 			// Theme initialization
 			document.documentElement.classList.toggle(
@@ -76,25 +76,23 @@ const metadata = {
 						<h1
 							class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground dark:text-foreground-dark"
 						>
-							Página no encontrada
+							{t('not-found.heading')}
 						</h1>
 						<p
 							class="text-lg md:text-xl text-secondary dark:text-secondary-dark max-w-2xl mx-auto"
 						>
-							Parece que te has perdido en el código. La página que buscas no existe o
-							ha sido movida a otra ubicación.
+							{t('not-found.message')}
 						</p>
 					</div>
-
 					<!-- Action Buttons -->
 					<div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-						<LinkButton href="/" target="_self">
+						<LinkButton href={lang === 'en' ? '/en' : '/'} target="_self">
 							<Home class="size-5" />
-							Ir al inicio
+							{t('not-found.home-button')}
 						</LinkButton>
 						<Button variant="secondary" onclick="history.back()">
 							<ArrowLeft class="size-5" />
-							Volver atrás
+							{t('not-found.back-button')}
 						</Button>
 					</div>
 					<!-- Fun fact -->
@@ -106,8 +104,7 @@ const metadata = {
 							<p
 								class="text-base text-secondary dark:text-secondary-dark italic leading-relaxed"
 							>
-								En un multiverso infinito, esta página existe... solo que no en
-								este.
+								{t('not-found.quote')}
 							</p>
 							<QuoteRight
 								class="size-5 shrink-0 text-brand dark:text-brand-light opacity-60 mt-0.5"
